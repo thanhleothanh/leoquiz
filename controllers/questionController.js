@@ -16,14 +16,14 @@ exports.getQuestionsRandomly = catchAsync(async (req, res, next) => {
       {
         $match: { type: { $in: [...req.query.type] } },
       },
-      { $sample: { size: 10 } },
+      { $sample: { size: 20 } },
     ]);
   else {
     questions = await Question.aggregate([
       {
         $match: { type: { $eq: req.query.type } },
       },
-      { $sample: { size: 10 } },
+      { $sample: { size: 20 } },
     ]);
   }
   res.status(200).json(questions);

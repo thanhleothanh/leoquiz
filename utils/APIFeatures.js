@@ -39,8 +39,8 @@ class APIfeatures {
 
   pageLimit() {
     const page = this.reqquery.page * 1 || 1;
-    const skip = (page - 1) * 10;
-    this.query = this.query.skip(skip).limit(10);
+    const skip = (page - 1) * 20;
+    this.query = this.query.skip(skip).limit(20);
     return this;
   }
 }
