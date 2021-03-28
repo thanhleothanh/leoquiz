@@ -5,10 +5,11 @@ const userSchema = mongoose.Schema(
   {
     username: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, minlength: 8 },
     teacher: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      default: '6049aa4b2482c93d30b2a94c',
       ref: 'User',
     },
     star: { type: Number, default: 0, required: true },

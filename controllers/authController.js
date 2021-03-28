@@ -50,6 +50,28 @@ exports.register = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.signup = catchAsync(async (req, res, next) => {
+  const newUser = await User.create({
+    username: req.body.username,
+    password: req.body.password,
+    name: req.body.name,
+    class: 'outsider',
+  });
+  const token = signToken({ id: newUser._id });
+  res.status(201).json({
+    _id: newUser._id,
+    username: newUser.username,
+    name: newUser.name,
+    class: newUser.class,
+    score: newUser.score,
+    star: newUser.star,
+    quizTaken: newUser.quizTaken,
+    role: newUser.role,
+    teacher: newUser.teacher,
+    token,
+  });
+});
+
 exports.protect = catchAsync(async (req, res, next) => {
   if (!req.headers || !req.headers.authorization)
     throw new AppError('You have to be logged in to access this route', 403);
@@ -87,7 +109,8 @@ exports.changePassword = catchAsync(async (req, res, next) => {
     throw new AppError('Fill in all the information', 401);
   if (!(await currentUser.comparePassword(currentPassword)))
     throw new AppError('Current password is not correct', 401);
-
+  if (newPassword.trim().length < 8)
+    throw new AppError('Password must be at least 8 characters', 401);
   currentUser.password = newPassword;
   await currentUser.save();
 

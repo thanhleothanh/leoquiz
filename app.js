@@ -1,8 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
-const path = require('path');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const questionRouter = require('./routes/questionRoutes');
@@ -15,6 +15,11 @@ app.use(helmet());
 app.use(express.json());
 app.use(mongoSanitize());
 app.use(xss());
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }

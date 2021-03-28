@@ -41,7 +41,7 @@ exports.updateStar = catchAsync(async (req, res, next) => {
 
 exports.adminChangePassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ username: req.params.username });
-  if (!user) throw new AppError('No user found with this id', 404);
+  if (!user) throw new AppError('No user found with this username', 404);
   user.password = 'pass1234';
 
   await user.save();

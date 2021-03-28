@@ -1,8 +1,16 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
 const userRouter = express.Router();
+const apiLimiter = rateLimit({
+  windowMs: 180 * 60 * 1000, // 180 minutes
+  max: 5,
+});
+
+userRouter.use('/signup', apiLimiter);
+userRouter.route('/signup').post(authController.signup);
 
 userRouter
   .route('/register')
