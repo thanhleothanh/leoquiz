@@ -4,7 +4,7 @@ const testSchema = mongoose.Schema(
   {
     test_name: { type: String, required: true },
     test_description: { type: String, required: true },
-    active: { type: Boolean, required: true, default: false },
+    active: { type: Boolean, default: false },
     questions: [
       {
         _id: false,
@@ -29,9 +29,16 @@ const testSchema = mongoose.Schema(
     },
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: true,
   }
 );
+
+testSchema.virtual('maxScore').get(function () {
+  if (this.type === 'fillintheblank') return this.questions.length * 3;
+  else return this.questions.length * 2;
+});
 
 const Test = mongoose.model('Test', testSchema);
 

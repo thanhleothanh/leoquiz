@@ -21,13 +21,13 @@ userRouter
   );
 userRouter.route('/login').post(authController.login);
 userRouter.route('/').get(authController.protect, userController.getScoreboard);
-userRouter
-  .route('/students')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin', 'teacher'),
-    userController.getStudents
-  );
+// userRouter
+//   .route('/students')
+//   .get(
+//     authController.protect,
+//     authController.restrictTo('admin', 'teacher'),
+//     userController.getStudents
+//   );
 userRouter
   .route('/students/:id')
   .patch(
@@ -35,10 +35,11 @@ userRouter
     authController.restrictTo('admin', 'teacher'),
     userController.updateStar
   );
+
 userRouter
   .route('/:id')
-  .patch(authController.protect, userController.updateScore)
-  .get(authController.protect, userController.getTestTaken);
+  .patch(authController.protect, userController.updateScore);
+
 userRouter
   .route('/:id/changePassword')
   .patch(authController.protect, authController.changePassword);

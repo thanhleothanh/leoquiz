@@ -8,6 +8,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const questionRouter = require('./routes/questionRoutes');
 const userRouter = require('./routes/userRoutes');
 const testRouter = require('./routes/testRoutes');
+const testResultRouter = require('./routes/testResultRoutes');
 const app = express();
 
 app.use(cors());
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/questions', questionRouter);
 app.use('/api/users', userRouter);
 app.use('/api/tests', testRouter);
+app.use('/api/testResults', testResultRouter);
 
 app.get('/', (req, res) => {
   res.status(200).json({

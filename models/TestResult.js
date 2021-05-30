@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const testTakenSchema = mongoose.Schema(
+const testResultSchema = mongoose.Schema(
   {
     test: {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +19,6 @@ const testTakenSchema = mongoose.Schema(
   }
 );
 
-const TestTaken = mongoose.model('TestTaken', testTakenSchema);
+const TestResult = mongoose.model('TestResult', testResultSchema);
 
-module.exports = TestTaken;
+module.exports = TestResult;

@@ -1,5 +1,4 @@
 const User = require('./../models/User');
-const TestTaken = require('./../models/TestTaken');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/AppError');
 
@@ -18,11 +17,6 @@ exports.getScoreboard = catchAsync(async (req, res, next) => {
     .sort('-score')
     .populate('teacher', 'name');
   res.status(200).json(users);
-});
-
-exports.getTestTaken = catchAsync(async (req, res, next) => {
-  const tests = await TestTaken.find({ user: req.user._id }); //test taken
-  res.status(200).json(tests);
 });
 
 exports.getStudents = catchAsync(async (req, res, next) => {
