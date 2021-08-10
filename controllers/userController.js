@@ -20,7 +20,10 @@ exports.getScoreboard = catchAsync(async (req, res, next) => {
 });
 
 exports.getStudents = catchAsync(async (req, res, next) => {
-  const students = await User.find({ teacher: req.user._id });
+  const students = await User.find({ teacher: req.user._id, role: 'student' })
+    .select('-password -__v -createdAt -updatedAt')
+    .sort('-class -score')
+    .populate('teacher', 'name');
   res.status(200).json(students);
 });
 

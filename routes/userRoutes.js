@@ -5,12 +5,15 @@ const authController = require('./../controllers/authController');
 
 const userRouter = express.Router();
 const apiLimiter = rateLimit({
-  windowMs: 180 * 60 * 1000, // 180 minutes
+  windowMs: 360 * 60 * 1000, // 360 minutes
   max: 5,
 });
 
 userRouter.use('/signup', apiLimiter);
+
 userRouter.route('/signup').post(authController.signup);
+
+userRouter.route('/login').post(authController.login);
 
 userRouter
   .route('/register')
@@ -19,15 +22,15 @@ userRouter
     authController.restrictTo('admin', 'teacher'),
     authController.register
   );
-userRouter.route('/login').post(authController.login);
-userRouter.route('/').get(authController.protect, userController.getScoreboard);
-// userRouter
-//   .route('/students')
-//   .get(
-//     authController.protect,
-//     authController.restrictTo('admin', 'teacher'),
-//     userController.getStudents
-//   );
+
+userRouter
+  .route('/students')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin', 'teacher'),
+    userController.getStudents
+  );
+
 userRouter
   .route('/students/:id')
   .patch(
@@ -36,13 +39,16 @@ userRouter
     userController.updateStar
   );
 
-userRouter
-  .route('/:id')
-  .patch(authController.protect, userController.updateScore);
+userRouter.route('/').get(authController.protect, userController.getScoreboard);
 
 userRouter
   .route('/:id/changePassword')
   .patch(authController.protect, authController.changePassword);
+
+userRouter
+  .route('/:id')
+  .patch(authController.protect, userController.updateScore);
+
 module.exports = userRouter;
 
 //admin change password
